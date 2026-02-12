@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+
+  <title>Kevin L. Michel — Author & App Developer</title>
+  <meta name="description" content="Kevin L. Michel builds narrative-first, psychology-informed apps: gamified journaling, reader experiences, and interactive story worlds." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Kevin L. Michel — Author & App Developer" />
+  <meta property="og:description" content="Narrative-first, psychology-informed apps: gamified journaling, reader experiences, and interactive story worlds." />
+  <meta property="og:type" content="website" />
+  <!-- Tip: add og:image once you have a social preview image -->
+  <!-- <meta property="og:image" content="https://your-domain.com/og-image.png" /> -->
+
+  <style>
+    :root{
+      --bg0: #070A12;
+      --bg1: #0B1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --faint: rgba(255,255,255,.55);
+      --line: rgba(255,255,255,.12);
+
+      --accent: #A78BFA; /* violet */
+      --accent2:#22D3EE; /* cyan */
+      --good: #34D399;
+
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 28px;
+
+      --max: 1120px;
+      --pad: clamp(18px, 3vw, 28px);
+
+      --h1: clamp(2.1rem, 4.2vw, 3.4rem);
+      --h2: clamp(1.35rem, 2.3vw, 1.75rem);
+      --h3: 1.1rem;
+      --p: 1.02rem;
+      --small: .93rem;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    /* Light mode support */
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0: #F7F7FB;
+        --bg1: #FFFFFF;
+        --card: rgba(0,0,0,.05);
+        --card2: rgba(0,0,0,.07);
+        --text: rgba(10,14,25,.92);
+        --muted: rgba(10,14,25,.72);
+        --faint: rgba(10,14,25,.55);
+        --line: rgba(10,14,25,.12);
+        --shadow: 0 18px 55px rgba(10,14,25,.12);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height:100%; }
+    body{
+      margin: 0;
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 600px at 25% -10%, rgba(167,139,250,.30), transparent 60%),
+        radial-gradient(900px 520px at 85% 5%, rgba(34,211,238,.20), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+
+    .skip{
+      position: absolute;
+      left: -9999px;
+      top: 8px;
+      background: var(--bg1);
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      border-radius: 10px;
+      z-index: 999;
+    }
+    .skip:focus{ left: 10px; }
+
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 26px var(--pad) 80px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
+      padding: 8px 0 18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 260px;
+    }
+    .mark{
+      width: 42px; height: 42px;
+      border-radius: 14px;
+      background:
+        radial-gradient(16px 16px at 35% 30%, rgba(255,255,255,.35), transparent 60%),
+        linear-gradient(135deg, rgba(167,139,250,.90), rgba(34,211,238,.75));
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .brand strong{ letter-spacing: .2px; }
+    .brand small{
+      display:block;
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: 2px;
+    }
+
+    nav{
+      display:flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+    nav a{
+      font-size: .95rem;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+    }
+    nav a:hover{
+      color: var(--text);
+      background: var(--card);
+      border-color: var(--line);
+      text-decoration: none;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: clamp(18px, 3vw, 30px);
+      padding: clamp(18px, 4vw, 34px);
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position: relative;
+      margin-top: 6px;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(700px 240px at 10% 0%, rgba(167,139,250,.16), transparent 60%),
+        radial-gradient(520px 220px at 90% 10%, rgba(34,211,238,.12), transparent 60%);
+      pointer-events:none;
+    }
+    .hero > *{ position: relative; }
+
+    h1{
+      font-size: var(--h1);
+      margin: 0 0 8px;
+      letter-spacing: -0.5px;
+      line-height: 1.06;
+    }
+    .tagline{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.18rem);
+      max-width: 58ch;
+    }
+    .pillrow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: .93rem;
+    }
+    .dot{
+      width: 9px; height: 9px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 3px rgba(167,139,250,.12);
+    }
+
+    .cta{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      text-decoration:none;
+      font-weight: 600;
+      box-shadow: 0 12px 32px rgba(0,0,0,.20);
+    }
+    .btn:hover{ text-decoration:none; background: var(--card2); }
+    .btn.primary{
+      border-color: rgba(167,139,250,.45);
+      background: linear-gradient(135deg, rgba(167,139,250,.26), rgba(34,211,238,.16));
+    }
+    .btn .icon{
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--faint);
+    }
+
+    .aside{
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.14);
+      padding: 16px 16px 14px;
+      backdrop-filter: blur(8px);
+    }
+    @media (prefers-color-scheme: light){
+      .aside{ background: rgba(255,255,255,.38); }
+    }
+    .aside h2{
+      font-size: 1.05rem;
+      margin: 0 0 10px;
+      color: var(--text);
+      letter-spacing: .2px;
+    }
+    .meta{
+      display:grid;
+      gap: 10px;
+      margin: 0;
+    }
+    .meta .row{
+      display:flex;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+    }
+    .k{ color: var(--muted); font-size: .92rem; }
+    .v{
+      color: var(--text);
+      font-size: .92rem;
+      font-family: var(--mono);
+      overflow-wrap:anywhere;
+      text-align:right;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .card{
+      grid-column: span 6;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.18);
+    }
+    .card h3{
+      margin: 0 0 8px;
+      font-size: var(--h2);
+      letter-spacing: -0.2px;
+    }
+    .card p{
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: var(--p);
+      max-width: 70ch;
+    }
+    .card ul{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+    .card li{ margin: 6px 0; }
+
+    .full{ grid-column: span 12; }
+    .third{ grid-column: span 4; }
+    .twoThird{ grid-column: span 8; }
+
+    .callout{
+      display:flex;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(52,211,153,.28);
+      background: linear-gradient(135deg, rgba(52,211,153,.10), rgba(34,211,238,.06));
+    }
+    .callout strong{ font-size: 1.05rem; }
+    .callout span{ color: var(--muted); }
+
+    section{ scroll-margin-top: 96px; }
+    .sectionTitle{
+      margin: 38px 0 10px;
+      font-size: 1.15rem;
+      letter-spacing: .24px;
+      color: var(--faint);
+      text-transform: uppercase;
+    }
+
+    footer{
+      margin-top: 38px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .94rem;
+      display:flex;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .fine{
+      font-size: var(--small);
+      color: var(--muted);
+    }
+    .inlineLinks{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .inlineLinks a{
+      color: var(--muted);
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+    }
+    .inlineLinks a:hover{
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(255,255,255,.04);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .hero{ grid-template-columns: 1fr; }
+      nav{ justify-content:flex-start; }
+      .brand{ min-width: unset; }
+      .third, .twoThird, .card{ grid-column: span 12; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="wrap">
+    <header>
+      <div class="brand" aria-label="Site brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <strong>Kevin L. Michel</strong>
+          <small>Author • App Developer • Psychology-informed design</small>
+        </div>
+      </div>
+
+      <nav aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#apps">Apps</a>
+        <a href="#writing">Writing</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-label="Hero">
+        <div>
+          <h1>Stories you can live inside.</h1>
+          <p class="tagline">
+            I’m Kevin L. Michel — an author building narrative-first Android apps: gamified journals, unique reader experiences,
+            and interactive worlds inspired by my written work.
+          </p>
+
+          <div class="pillrow" aria-label="Highlights">
+            <span class="pill"><span class="dot" aria-hidden="true"></span> MSc. General Psychology</span>
+            <span class="pill"><span class="dot" aria-hidden="true"></span> Published author</span>
+            <span class="pill"><span class="dot" aria-hidden="true"></span> Building for Android + Google Play</span>
+          </div>
+
+          <div class="cta" aria-label="Primary calls to action">
+            <a class="btn primary" href="https://www.KevinMichel.com" rel="me noopener" target="_blank">
+              <span class="icon">↗</span> Author site
+            </a>
+            <a class="btn" href="https://github.com/KevinLMichel" rel="me noopener" target="_blank">
+              <span class="icon">↗</span> GitHub
+            </a>
+            <a class="btn" href="#apps">
+              <span class="icon">↓</span> What I’m building
+            </a>
+          </div>
+        </div>
+
+        <aside class="aside" aria-label="Quick facts">
+          <h2>Quick facts</h2>
+          <div class="meta">
+            <div class="row">
+              <div class="k">Focus</div>
+              <div class="v">Narrative apps</div>
+            </div>
+            <div class="row">
+              <div class="k">Formats</div>
+              <div class="v">Journals • Readers • Games</div>
+            </div>
+            <div class="row">
+              <div class="k">Platforms</div>
+              <div class="v">Android (Google Play)</div>
+            </div>
+            <div class="row">
+              <div class="k">Links</div>
+              <div class="v">kevinmichel.com</div>
+            </div>
+          </div>
+          <p class="fine" style="margin:12px 2px 0;">
+            </p>
+        </aside>
+      </section>
+
+      <div class="grid">
+        <section id="about" class="card twoThird" aria-label="About">
+          <div class="sectionTitle">About</div>
+          <h3>Psychology-informed design, built for readers.</h3>
+          <p>
+            My work sits at the intersection of story, self-reflection, and playful structure.
+            I’m translating written worlds into mobile experiences—tools that feel like games, and games that feel like journals.
+          </p>
+          <ul>
+            <li><strong>Readable by design:</strong> typography, rhythm, and pacing that respect attention.</li>
+            <li><strong>Meaningful interaction:</strong> choices, prompts, progress, and feedback loops that feel human.</li>
+            <li><strong>Trust & clarity:</strong> straightforward privacy disclosures and minimal data collection.</li>
+          </ul>
+        </section>
+
+        <section class="card third" aria-label="Now building">
+          <div class="sectionTitle">Now</div>
+          <h3>In development</h3>
+          <p>
+            I’m building a small suite of Android apps that expand my written content into new imagined forms—interactive reading,
+            guided journaling, and narrative games.
+          </p>
+          <p class="fine">
+            Launch links will appear here as apps are published.
+          </p>
+        </section>
+
+        <section id="apps" class="card full" aria-label="Apps">
+          <div class="sectionTitle">Apps</div>
+          <h3>What you can expect on Google Play</h3>
+          <p>
+            The first releases will be lightweight, useful, and original—designed to be approachable while still distinctive.
+          </p>
+
+          <div class="grid" style="margin-top: 10px;">
+            <div class="card third" style="margin:0; box-shadow:none;">
+              <h3 style="font-size:1.08rem; margin-bottom:6px;">Gamified Journals</h3>
+              <p class="fine">
+                Mood, reflection, and “quest” journaling—built to support consistency without guilt.
+              </p>
+            </div>
+            <div class="card third" style="margin:0; box-shadow:none;">
+              <h3 style="font-size:1.08rem; margin-bottom:6px;">Unique Reader Apps</h3>
+              <p class="fine">
+                Alternative reading modes: guided immersion, chapter rituals, annotation systems, and interactive extras.
+              </p>
+            </div>
+            <div class="card third" style="margin:0; box-shadow:none;">
+              <h3 style="font-size:1.08rem; margin-bottom:6px;">Narrative Worlds</h3>
+              <p class="fine">
+                Story experiences that blur book/game boundaries—designed for mobile attention and replay value.
+              </p>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 14px;">
+            <div>
+              <strong>Policy-aligned from day one.</strong><br />
+              <span>Each app will include clear disclosures, support contact info, and an updated privacy statement.</span>
+            </div>
+            <a class="btn primary" href="#privacy"><span class="icon">→</span> Privacy approach</a>
+          </div>
+        </section>
+
+        <section id="writing" class="card full" aria-label="Writing">
+          <div class="sectionTitle">Writing</div>
+          <h3>My books & written worlds</h3>
+          <p>
+            I’m a published author, and my apps are extensions of the same creative universe — reimagined as interactive systems.
+            For my bibliography, updates, and writing, visit my author site:
+            <a href="https://www.KevinMichel.com" rel="me noopener" target="_blank">KevinMichel.com</a>.
+          </p>
+          <p class="fine">
+            If you’re a reader: app releases will be announced alongside new writing drops and project updates.
+          </p>
+        </section>
+
+        <section id="privacy" class="card twoThird" aria-label="Privacy">
+          <div class="sectionTitle">Privacy</div>
+          <h3>Privacy-first by default</h3>
+          <p>
+            I aim for minimal data collection and maximal transparency. Any data that an app needs will be explained in plain language
+            inside the app and reflected in its Google Play “Data safety” disclosures.
+          </p>
+          <ul>
+            <li><strong>No hidden tracking:</strong> if analytics are ever used, they’ll be explicitly disclosed and optional where possible.</li>
+            <li><strong>Least-privilege permissions:</strong> apps request only what they genuinely need.</li>
+            <li><strong>Clear controls:</strong> export/delete options where relevant, and straightforward settings.</li>
+          </ul>
+          <p class="fine">
+            Note: specific privacy terms may vary per app depending on features (e.g., cloud sync). This page will be kept current.
+          </p>
+        </section>
+
+        <section class="card third" aria-label="Support">
+          <div class="sectionTitle">Support</div>
+          <h3>Support & contact</h3>
+          <p class="fine" style="margin-top:6px;">
+            Replace the placeholder below with your preferred support email (this matters for Google Play listings).
+          </p>
+          <div class="meta" style="margin-top: 10px;">
+            <div class="row">
+              <div class="k">Support email</div>
+              <div class="v">Kevinlmichel@gmail.com</div>
+            </div>
+            <div class="row">
+              <div class="k">GitHub</div>
+              <div class="v">KevinLMichel</div>
+            </div>
+          </div>
+          <p class="fine" style="margin-top: 10px;">
+            Tip: create a dedicated address like <span style="font-family:var(--mono);">kevinlmichel@gmail.com</span>.
+          </p>
+        </section>
+
+        <section id="contact" class="card full" aria-label="Contact">
+          <div class="sectionTitle">Contact</div>
+          <h3>Reach me</h3>
+          <p>
+            For writing, collaborations, or app-related questions, the best place to start is my author site or GitHub.
+            KevinLMichel@gmail.com
+          </p>
+
+          <div class="cta" style="margin-top: 10px;">
+            <a class="btn primary" href="https://www.KevinMichel.com" rel="me noopener" target="_blank">
+              <span class="icon">↗</span> Visit KevinMichel.com
+            </a>
+            <a class="btn" href="https://github.com/KevinLMichel" rel="me noopener" target="_blank">
+              <span class="icon">↗</span> Open GitHub
+            </a>
+          </div>
+
+          <p class="fine" style="margin-top: 14px;">
+            This site does not use cookies or trackers.
+          </p>
+        </section>
+      </div>
+
+      <footer>
+        <div class="inlineLinks" aria-label="Footer links">
+          <a href="#about">About</a>
+          <a href="#apps">Apps</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="fine">
+          © <span id="year"></span> Kevin L. Michel
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Keep it tiny: just update the year.
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
